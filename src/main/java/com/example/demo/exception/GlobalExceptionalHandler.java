@@ -69,7 +69,7 @@ public class GlobalExceptionalHandler {
 
     @ExceptionHandler(ExistArticleException.class)
     public ResponseEntity<ErrorResponse> handleExistArticleException(ExistArticleException e) {
-        ErrorResponse response = new ErrorResponse(ErrorCode.EXIST_ARTICLE);
+        ErrorResponse response = new ErrorResponse(ErrorCode.EXIST_ARTICLE, e.getMessage());
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 /*
