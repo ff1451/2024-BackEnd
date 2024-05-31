@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import com.example.demo.exception.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,9 +35,12 @@ public class ArticleService {
     }
 
     public ArticleResponse getById(Long id) {
-        Article article = articleRepository.findById(id);
-        Member member = memberRepository.findById(article.getAuthorId());
-        Board board = boardRepository.findById(article.getBoardId());
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new ArticleNotFoundException("게시글 조회 실패"));
+        Member member = memberRepository.findById(article.getAuthorId())
+                .orElseThrow(()-> new MemberNotFoundException("사용자 조회 실패"));
+        Board board = boardRepository.findById(article.getBoardId())
+                .orElseThrow(()->new BoardNotFoundException("게시판을 찾을 수 없습니다."));
         return ArticleResponse.of(article, member, board);
     }
 
@@ -44,8 +48,10 @@ public class ArticleService {
         List<Article> articles = articleRepository.findAllByBoardId(boardId);
         return articles.stream()
             .map(article -> {
-                Member member = memberRepository.findById(article.getAuthorId());
-                Board board = boardRepository.findById(article.getBoardId());
+                Member member = memberRepository.findById(article.getAuthorId())
+                        .orElseThrow(()-> new MemberNotFoundException("사용자 조회 실패"));
+                Board board = boardRepository.findById(article.getBoardId())
+                        .orElseThrow(()->new BoardNotFoundException("게시판 조회 실패"));
                 return ArticleResponse.of(article, member, board);
             })
             .toList();
@@ -53,6 +59,12 @@ public class ArticleService {
 
     @Transactional
     public ArticleResponse create(ArticleCreateRequest request) {
+
+        Member member = memberRepository.findById(request.authorId())
+            .orElseThrow(()->new InvalidMemberException("존재하지 않는 사용자입니다."));
+        Board board = boardRepository.findById(request.boardId())
+            .orElseThrow(()->new InvalidBoardException("존재하지 않는 게시판입니다."));
+
         Article article = new Article(
             request.authorId(),
             request.boardId(),
@@ -60,18 +72,22 @@ public class ArticleService {
             request.description()
         );
         Article saved = articleRepository.insert(article);
-        Member member = memberRepository.findById(saved.getAuthorId());
-        Board board = boardRepository.findById(saved.getBoardId());
+
         return ArticleResponse.of(saved, member, board);
     }
 
     @Transactional
     public ArticleResponse update(Long id, ArticleUpdateRequest request) {
-        Article article = articleRepository.findById(id);
+        Board board = boardRepository.findById(request.boardId())
+            .orElseThrow(()->new InvalidBoardException("존재하지 않는 게시판입니다."));
+
+        Article article = articleRepository.findById(id)
+                .orElseThrow();
         article.update(request.boardId(), request.title(), request.description());
         Article updated = articleRepository.update(article);
-        Member member = memberRepository.findById(updated.getAuthorId());
-        Board board = boardRepository.findById(article.getBoardId());
+        Member member = memberRepository.findById(updated.getAuthorId())
+                .orElseThrow(()->new InvalidMemberException("존재하지 않는 사용자입니다."));
+
         return ArticleResponse.of(article, member, board);
     }
 

@@ -2,6 +2,10 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import com.example.demo.exception.BoardNotFoundException;
+import com.example.demo.exception.ExistArticleException;
+import com.example.demo.repository.ArticleRepository;
+import com.example.demo.repository.ArticleRepositoryJdbc;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +20,11 @@ import com.example.demo.repository.BoardRepository;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final ArticleRepository articleRepository;
 
-    public BoardService(BoardRepository boardRepository) {
+    public BoardService(BoardRepository boardRepository, ArticleRepository articleRepository) {
         this.boardRepository = boardRepository;
+        this.articleRepository = articleRepository;
     }
 
     public List<BoardResponse> getBoards() {
@@ -28,7 +34,8 @@ public class BoardService {
     }
 
     public BoardResponse getBoardById(Long id) {
-        Board board = boardRepository.findById(id);
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new BoardNotFoundException("게시판 조회 실패"));
         return BoardResponse.from(board);
     }
 
@@ -41,12 +48,16 @@ public class BoardService {
 
     @Transactional
     public void deleteBoard(Long id) {
+        if (articleRepository.existsByBoardId(id)) {
+            throw new ExistArticleException("게시판에 작성된 게시물이 존재합니다.");
+        }
         boardRepository.deleteById(id);
     }
 
     @Transactional
     public BoardResponse update(Long id, BoardUpdateRequest request) {
-        Board board = boardRepository.findById(id);
+        Board board = boardRepository.findById(id)
+                .orElseThrow(()->new BoardNotFoundException("게시판 조회 실패"));
         board.update(request.name());
         Board updated = boardRepository.update(board);
         return BoardResponse.from(updated);
