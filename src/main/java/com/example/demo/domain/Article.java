@@ -82,4 +82,5 @@ public class Article {
     public LocalDateTime getModifiedAt() {
         return modifiedAt;
     }
+
 }

@@ -29,4 +29,5 @@ public class Board {
     public void update(String name) {
         this.name = name;
     }
+
 }
