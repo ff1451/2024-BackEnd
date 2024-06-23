@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.domain.Member;
 
-@Repository
+//@Repository
 public class MemberRepositoryJdbc implements MemberRepository {
 
     private final JdbcTemplate jdbcTemplate;
