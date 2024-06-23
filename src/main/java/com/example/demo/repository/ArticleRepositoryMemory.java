@@ -69,13 +69,4 @@ public class ArticleRepositoryMemory implements ArticleRepository {
         articles.remove(id);
     }
 
-    @Override
-    public boolean existsByAuthorId(Long authorId) {
-        return false;
-    }
-
-    @Override
-    public boolean existsByBoardId(Long boardId) {
-        return false;
-    }
 }

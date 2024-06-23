@@ -115,24 +115,4 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
             WHERE id = ?
             """, id);
     }
-
-    @Override
-    public boolean existsByAuthorId(Long authorId) {
-        Integer count = jdbcTemplate.queryForObject("""
-            SELECT COUNT(*)
-            FROM article
-            WHERE author_id =?
-            """, Integer.class, authorId);
-        return count != null && count > 0;
-    }
-
-    @Override
-    public boolean existsByBoardId(Long boardId) {
-        Integer count = jdbcTemplate.queryForObject("""
-            SELECT COUNT(*)
-            FROM article
-            WHERE author_id =?
-            """, Integer.class, boardId);
-        return count != null && count > 0;
-    }
 }

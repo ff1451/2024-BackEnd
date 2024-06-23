@@ -2,10 +2,9 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import com.example.demo.exception.BoardHasArticleException;
 import com.example.demo.exception.BoardNotFoundException;
-import com.example.demo.exception.ExistArticleException;
 import com.example.demo.repository.ArticleRepository;
-import com.example.demo.repository.ArticleRepositoryJdbc;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,8 +47,8 @@ public class BoardService {
 
     @Transactional
     public void deleteBoard(Long id) {
-        if (articleRepository.existsByBoardId(id)) {
-            throw new ExistArticleException("게시판에 작성된 게시물이 존재합니다.");
+        if (articleRepository.findAllByBoardId(id) != null) {
+            throw new BoardHasArticleException("게시판에 작성된 게시물이 존재합니다.");
         }
         boardRepository.deleteById(id);
     }

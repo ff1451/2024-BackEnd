@@ -20,8 +20,4 @@ public interface ArticleRepository {
     Article update(Article article);
 
     void deleteById(Long id);
-
-    boolean existsByAuthorId(Long authorId);
-
-    boolean existsByBoardId(Long boardId);
 }

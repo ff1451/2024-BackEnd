@@ -46,6 +46,9 @@ public class ArticleService {
 
     public List<ArticleResponse> getByBoardId(Long boardId) {
         List<Article> articles = articleRepository.findAllByBoardId(boardId);
+
+        if (articles.isEmpty()) throw new ArticleNotFoundException("게시글 조회 실패");
+
         return articles.stream()
             .map(article -> {
                 Member member = memberRepository.findById(article.getAuthorId())

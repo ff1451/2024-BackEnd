@@ -3,7 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 
 import com.example.demo.exception.EmailExistenceException;
-import com.example.demo.exception.ExistArticleException;
+import com.example.demo.exception.MemberHasArticleException;
 import com.example.demo.exception.MemberNotFoundException;
 import com.example.demo.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
@@ -50,8 +50,8 @@ public class MemberService {
 
     @Transactional
     public void delete(Long id) {
-        if(articleRepository.existsByAuthorId(id)){
-            throw new ExistArticleException("사용자가 작성한 게시물이 존재합니다.");
+        if(articleRepository.findAllByMemberId(id) != null){
+            throw new MemberHasArticleException("사용자가 작성한 게시물이 존재합니다.");
         }
         memberRepository.deleteById(id);
     }
