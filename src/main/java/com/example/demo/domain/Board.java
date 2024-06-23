@@ -1,9 +1,19 @@
 package com.example.demo.domain;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "board")
 public class Board {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name", nullable = false)
     private String name;
+
+    protected Board() {};
 
     public Board(Long id, String name) {
         this.id = id;

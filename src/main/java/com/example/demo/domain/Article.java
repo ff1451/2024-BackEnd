@@ -1,16 +1,31 @@
 package com.example.demo.domain;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "article")
 public class Article {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "authorId", nullable = false)
     private Long authorId;
+    @Column(name = "boardId", nullable = false)
     private Long boardId;
+    @Column(name = "title", nullable = false)
     private String title;
+    @Column(name = "content", nullable = false)
     private String content;
+    @Column(name = "createdDate", nullable = false)
     private LocalDateTime createdAt;
+    @Column(name = "modifiedDate", nullable = false)
     private LocalDateTime modifiedAt;
+
+    protected Article() {}
 
     public Article(
         Long id,

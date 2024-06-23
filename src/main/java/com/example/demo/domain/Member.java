@@ -1,11 +1,23 @@
 package com.example.demo.domain;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "member")
 public class Member {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "email", nullable = false)
     private String email;
+    @Column(name = "password", nullable = false)
     private String password;
+
+    protected Member() {}
 
     public Member(Long id, String name, String email, String password) {
         this.id = id;
