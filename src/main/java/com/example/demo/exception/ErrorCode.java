@@ -15,7 +15,8 @@ public enum ErrorCode {
 
     NULL_VALUE(400,"BAD REQUEST", "요청 중 null 값이 존재합니다."),
 
-    EXIST_ARTICLE(400, "BAD REQUEST", "사용자 혹은 게시판과 연관된 게시물이 존재합니다."),
+    MEMBER_HAS_ARTICLE(400, "BAD REQUEST", "사용자가 작성한 게시물이 존재합니다."),
+    BOARD_HAS_ARTICLE(400, "BAD REQUEST", "게시판 내에 작성된 게시물이 존재합니다."),
 
     INTERNAL_SERVER_ERROR(500, "INTERNAL_SERVER_ERROR","서버 오류가 발생했습니다.");
 

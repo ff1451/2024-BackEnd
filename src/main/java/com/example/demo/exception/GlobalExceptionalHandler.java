@@ -60,16 +60,15 @@ public class GlobalExceptionalHandler {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
-
-    @ExceptionHandler(NullValueException.class)
-    public ResponseEntity<ErrorResponse> handleNullValueException(NullValueException e) {
-        ErrorResponse response = new ErrorResponse(ErrorCode.NULL_VALUE);
+    @ExceptionHandler(MemberHasArticleException.class)
+    public ResponseEntity<ErrorResponse> handleExistArticleException(MemberHasArticleException e) {
+        ErrorResponse response = new ErrorResponse(ErrorCode.MEMBER_HAS_ARTICLE, e.getMessage());
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
-    @ExceptionHandler(ExistArticleException.class)
-    public ResponseEntity<ErrorResponse> handleExistArticleException(ExistArticleException e) {
-        ErrorResponse response = new ErrorResponse(ErrorCode.EXIST_ARTICLE, e.getMessage());
+    @ExceptionHandler(BoardHasArticleException.class)
+    public ResponseEntity<ErrorResponse> handleExistArticleException(BoardHasArticleException e) {
+        ErrorResponse response = new ErrorResponse(ErrorCode.MEMBER_HAS_ARTICLE, e.getMessage());
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 /*
