@@ -41,7 +41,7 @@ public class BoardService {
     @Transactional
     public BoardResponse createBoard(BoardCreateRequest request) {
         Board board = new Board(request.name());
-        Board saved = boardRepository.insert(board);
+        Board saved = boardRepository.save(board);
         return BoardResponse.from(saved);
     }
 
@@ -58,7 +58,7 @@ public class BoardService {
         Board board = boardRepository.findById(id)
                 .orElseThrow(()->new BoardNotFoundException("게시판 조회 실패"));
         board.update(request.name());
-        Board updated = boardRepository.update(board);
+        Board updated = boardRepository.save(board);
         return BoardResponse.from(updated);
     }
 }
