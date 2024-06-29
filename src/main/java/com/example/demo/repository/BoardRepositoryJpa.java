@@ -1,3 +1,4 @@
+/*
 package com.example.demo.repository;
 
 import com.example.demo.domain.Board;
@@ -49,3 +50,4 @@ public class BoardRepositoryJpa implements BoardRepository {
         return em.merge(board);
     }
 }
+*/
