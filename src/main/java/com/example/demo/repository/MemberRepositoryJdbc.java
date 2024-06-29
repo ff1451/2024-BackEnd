@@ -12,7 +12,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.domain.Member;
-
+/*
 //@Repository
 public class MemberRepositoryJdbc implements MemberRepository {
 
@@ -95,4 +95,4 @@ public class MemberRepositoryJdbc implements MemberRepository {
             WHERE id = ?
             """, id);
     }
-}
+}*/

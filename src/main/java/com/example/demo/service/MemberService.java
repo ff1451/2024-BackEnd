@@ -42,7 +42,7 @@ public class MemberService {
 
     @Transactional
     public MemberResponse create(MemberCreateRequest request) {
-        Member member = memberRepository.insert(
+        Member member = memberRepository.save(
             new Member(request.name(), request.email(), request.password())
         );
         return MemberResponse.from(member);
@@ -50,7 +50,7 @@ public class MemberService {
 
     @Transactional
     public void delete(Long id) {
-        if(articleRepository.findAllByMemberId(id) != null){
+        if(articleRepository.findAllByAuthorId(id) != null){
             throw new MemberHasArticleException("사용자가 작성한 게시물이 존재합니다.");
         }
         memberRepository.deleteById(id);
@@ -65,7 +65,7 @@ public class MemberService {
             throw new EmailExistenceException("이미 존재하는 이메일입니다: " + request.email());
         }
         member.update(request.name(), request.email());
-        memberRepository.update(member);
+        memberRepository.save(member);
         return MemberResponse.from(member);
     }
 }

@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.example.demo.domain.Member;
-
+/*
 public class MemberRepositoryMemory implements MemberRepository {
 
     private static final Map<Long, Member> members = new HashMap<>();
@@ -56,3 +56,4 @@ public class MemberRepositoryMemory implements MemberRepository {
         return false;
     }
 }
+*/

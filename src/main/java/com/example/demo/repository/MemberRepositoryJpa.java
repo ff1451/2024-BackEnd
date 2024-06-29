@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-
+/*
 @Repository
 public class MemberRepositoryJpa implements MemberRepository {
 
@@ -56,4 +56,4 @@ public class MemberRepositoryJpa implements MemberRepository {
             .getSingleResult();
         return count > 0;
     }
-}
+}*/
