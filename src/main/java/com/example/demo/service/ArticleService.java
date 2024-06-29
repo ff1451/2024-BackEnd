@@ -74,7 +74,7 @@ public class ArticleService {
             request.title(),
             request.description()
         );
-        Article saved = articleRepository.insert(article);
+        Article saved = articleRepository.save(article);
 
         return ArticleResponse.of(saved, member, board);
     }
@@ -87,7 +87,7 @@ public class ArticleService {
         Article article = articleRepository.findById(id)
                 .orElseThrow();
         article.update(request.boardId(), request.title(), request.description());
-        Article updated = articleRepository.update(article);
+        Article updated = articleRepository.save(article);
         Member member = memberRepository.findById(updated.getAuthorId())
                 .orElseThrow(()->new InvalidMemberException("존재하지 않는 사용자입니다."));
 

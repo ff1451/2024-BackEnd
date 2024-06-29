@@ -1,3 +1,4 @@
+/*
 package com.example.demo.repository;
 
 import java.sql.PreparedStatement;
@@ -116,3 +117,4 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
             """, id);
     }
 }
+*/
