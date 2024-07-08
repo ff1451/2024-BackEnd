@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 
 import com.example.demo.exception.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import com.example.demo.repository.BoardRepository;
 import com.example.demo.repository.MemberRepository;
 
 @Service
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ArticleService {
 
@@ -24,15 +26,6 @@ public class ArticleService {
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
 
-    public ArticleService(
-        ArticleRepository articleRepository,
-        MemberRepository memberRepository,
-        BoardRepository boardRepository
-    ) {
-        this.articleRepository = articleRepository;
-        this.memberRepository = memberRepository;
-        this.boardRepository = boardRepository;
-    }
 
     public ArticleResponse getById(Long id) {
         Article article = articleRepository.findById(id)

@@ -5,6 +5,7 @@ import java.util.List;
 import com.example.demo.exception.BoardHasArticleException;
 import com.example.demo.exception.BoardNotFoundException;
 import com.example.demo.repository.ArticleRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,16 +16,12 @@ import com.example.demo.domain.Board;
 import com.example.demo.repository.BoardRepository;
 
 @Service
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class BoardService {
 
     private final BoardRepository boardRepository;
     private final ArticleRepository articleRepository;
-
-    public BoardService(BoardRepository boardRepository, ArticleRepository articleRepository) {
-        this.boardRepository = boardRepository;
-        this.articleRepository = articleRepository;
-    }
 
     public List<BoardResponse> getBoards() {
         return boardRepository.findAll().stream()

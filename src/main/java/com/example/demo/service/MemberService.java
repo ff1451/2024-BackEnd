@@ -2,10 +2,14 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import com.example.demo.controller.dto.request.LoginRequest;
 import com.example.demo.exception.EmailExistenceException;
 import com.example.demo.exception.MemberHasArticleException;
 import com.example.demo.exception.MemberNotFoundException;
 import com.example.demo.repository.ArticleRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,16 +20,13 @@ import com.example.demo.domain.Member;
 import com.example.demo.repository.MemberRepository;
 
 @Service
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class MemberService {
 
     private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
-
-    public MemberService(MemberRepository memberRepository, ArticleRepository articleRepository) {
-        this.memberRepository = memberRepository;
-        this.articleRepository = articleRepository;
-    }
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public MemberResponse getById(Long id) {
         Member member = memberRepository.findById(id)
@@ -45,6 +46,16 @@ public class MemberService {
         Member member = memberRepository.save(
             new Member(request.name(), request.email(), request.password())
         );
+        return MemberResponse.from(member);
+    }
+
+    public MemberResponse login(LoginRequest request) {
+        Member member = memberRepository.findById(request.id())
+            .orElseThrow(()-> new MemberNotFoundException("회원을 찾을 수 없습니다."));
+
+        if (!passwordEncoder.matches(request.password(), member.getPassword())) {
+            throw new MemberNotFoundException("비밀번호가 일치하지 않습니다.");
+        }
         return MemberResponse.from(member);
     }
 
