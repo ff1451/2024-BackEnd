@@ -26,7 +26,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final PasswordEncoder passwordEncoder;
 
     public MemberResponse getById(Long id) {
         Member member = memberRepository.findById(id)
@@ -43,10 +43,13 @@ public class MemberService {
 
     @Transactional
     public MemberResponse create(MemberCreateRequest request) {
-        Member member = memberRepository.save(
-            new Member(request.name(), request.email(), request.password())
-        );
-        return MemberResponse.from(member);
+        if (memberRepository.existsByEmail(request.email())) {
+            throw new EmailExistenceException("이미 존재하는 이메일입니다.");
+        }
+
+        Member member = new Member(request.name(), request.email(), passwordEncoder.encode(request.password())); // 비밀번호 암호화
+        Member savedMember = memberRepository.save(member);
+        return MemberResponse.from(savedMember);
     }
 
     public MemberResponse login(LoginRequest request) {
